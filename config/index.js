@@ -1,7 +1,7 @@
 'use strict';
 
 const defaultRateLimitConfig = {
-  windowMs: 3 * 1000, // 3 seconds
+  windowMs: 5 * 1000, // 5 seconds
   max: 2, // Limit each IP to 2 requests per `window`
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
@@ -10,7 +10,7 @@ const defaultRateLimitConfig = {
 const config = {
   env: process.env.NODE_ENV,
   proxyNumber: 0,
-  port: 80,
+  port: process.env.PORT || 80,
   logger: {
     
   },
@@ -21,6 +21,13 @@ const config = {
         ...defaultRateLimitConfig,
         message: { error: 'Too many requests, please try again later.' },
       },
+    },
+  },
+  cache: {
+    engine: 'local',
+    options: {
+      capacity: 100,
+      expiration: 3600, // seconds
     },
   },
 };
