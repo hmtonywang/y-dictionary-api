@@ -1,1 +1,1 @@
-# ydlookup-server
+# y-dictionary-server

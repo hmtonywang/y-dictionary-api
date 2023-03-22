@@ -1,5 +1,5 @@
 {
-  "name": "ydlook-server",
+  "name": "y-dictionary-server",
   "version": "0.1.0",
   "description": "A service to look up vocabularies from the Yahoo dictionary.",
   "author": "hm.tony.wang@gmail.com",
