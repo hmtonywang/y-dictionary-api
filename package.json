@@ -11,7 +11,9 @@
   "scripts": {
     "start": "better-npm-run start",
     "dev": "better-npm-run dev",
-    "test": "better-npm-run test"
+    "test": "better-npm-run test",
+    "build": "better-npm-run build",
+    "gcloud-build": "better-npm-run gcloud-build"
   },
   "betterScripts": {
     "start": {
@@ -33,6 +35,12 @@
       "env": {
         "TZ": "Asia/Taipei"
       }
+    },
+    "build": {
+      "command": "docker build -t y-dictionary-server:latest ."
+    },
+    "gcloud-build": {
+      "command": "gcloud builds submit --tag gcr.io/impactful-drive-375211/y-dictionary-server ."
     }
   },
   "dependencies": {
