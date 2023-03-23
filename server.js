@@ -7,6 +7,7 @@ const { createTerminus } = require('@godaddy/terminus');
 const { proxyNumber, port } = require('./config');
 const logger = require('./libs/logger');
 const routes = require('./routes');
+const cache = require('./libs/cache');
 
 const app = express();
 const appLogger = logger('app');
@@ -48,24 +49,32 @@ app.use((req, res, next) => {
 
 routes.setup(app);
 
+const server = http.createServer(app);
+
 const beforeShutdown = () => {
   appLogger.info('Application server received signal and going to shut down.');
 };
-const onSignal = () => {
-  appLogger.info('Application server is starting cleanup');
+const onSignal = async () => {
+  appLogger.info('Application server is starting cleanup.');
+  try {
+    await cache.close();
+    appLogger.info('Cache closed.');
+  } catch (error) {
+    appLogger.error('Cache close failed.', error);
+    throw error;
+  }
 };
 const onShutdown = () => {
   appLogger.info('Cleanup finished, application server is shutting down.');
 };
 const terminusOptions = {
-  timeout: 30000, // 30 seconds
+  timeout: 10000, // 10 seconds
   signals: ['SIGINT', 'SIGTERM'],
+  sendFailuresDuringShutdown: true,
   beforeShutdown,
   onSignal,
   onShutdown,
 };
-
-const server = http.createServer(app);
 createTerminus(server, terminusOptions);
 server.listen(port, () => {
   appLogger.info(`Application server is listening on port ${port}`);

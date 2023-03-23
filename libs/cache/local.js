@@ -7,6 +7,10 @@ const CAPACITY = cache?.options?.capacity || 100;
 const EXPIRATION = cache?.options?.expiration || 3600;
 const map = new Map();
 
+const close = () => {
+  map.clear();
+};
+
 const get = (key) => {
   if (!map.has(key)) {
     return;
@@ -29,6 +33,7 @@ const set = (key, value) => {
 };
 
 module.exports = {
+  close,
   get,
   set,
 };
