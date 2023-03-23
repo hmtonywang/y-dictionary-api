@@ -70,3 +70,6 @@ createTerminus(server, terminusOptions);
 server.listen(port, () => {
   appLogger.info(`Application server is listening on port ${port}`);
 });
+process.on("uncaughtException", (error) => {
+  appLogger.error('uncaughtException', error);
+});
