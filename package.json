@@ -1,7 +1,7 @@
 {
   "name": "y-dictionary-server",
   "version": "0.1.0",
-  "description": "A service to look up vocabularies from the Yahoo dictionary.",
+  "description": "A service to look up words from the Yahoo dictionary.",
   "author": "hm.tony.wang@gmail.com",
   "main": "server.js",
   "license": "MIT",
