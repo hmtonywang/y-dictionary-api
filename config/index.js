@@ -1,35 +1,11 @@
 'use strict';
 
-const defaultRateLimitConfig = {
-  windowMs: 5 * 1000, // 5 seconds
-  max: 2, // Limit each IP to 2 requests per `window`
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+module.exports.env = process.env.NODE_ENV || 'development';
+module.exports.port = process.env.PORT || 80;
+module.exports.proxyNumber = process.env.PROXY_NUMBER || 1;
+module.exports.version = process.env.VERSION || 'v1';
+module.exports.rateLimit = process.env.RATE_LIMIT !== 'false';
+module.exports.auth = {
+  apiKey: process.env.AUTH_API_KEY || 'api-key',
+  expiry: process.env.AUTH_EXPIRY || 5,
 };
-
-const config = {
-  env: process.env.NODE_ENV,
-  proxyNumber: 0,
-  port: process.env.PORT || 80,
-  logger: {
-    
-  },
-  rateLimit: {
-    api: {
-      enable: true,
-      options: {
-        ...defaultRateLimitConfig,
-        message: { error: 'Too many requests, please try again later.' },
-      },
-    },
-  },
-  cache: {
-    engine: 'local',
-    options: {
-      capacity: 100,
-      expiration: 3600, // seconds
-    },
-  },
-};
-
-module.exports = config;

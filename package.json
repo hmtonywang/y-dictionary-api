@@ -1,9 +1,9 @@
 {
   "name": "y-dictionary-server",
   "version": "0.1.0",
-  "description": "A service to look up words from the Yahoo dictionary.",
+  "description": "A service to look up word(s).",
   "author": "hm.tony.wang@gmail.com",
-  "main": "server.js",
+  "main": "app.js",
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
@@ -17,14 +17,14 @@
   },
   "betterScripts": {
     "start": {
-      "command": "node server.js",
+      "command": "node app.js",
       "env": {
         "NODE_ENV": "production",
         "TZ": "Asia/Taipei"
       }
     },
     "dev": {
-      "command": "node --watch server.js",
+      "command": "node --watch app.js",
       "env": {
         "NODE_ENV": "development",
         "TZ": "Asia/Taipei"
@@ -49,11 +49,12 @@
     "better-npm-run": "^0.1.1",
     "bunyan": "^1.8.15",
     "cheerio": "^1.0.0-rc.12",
+    "compression": "^1.7.4",
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
     "express-validator": "^6.14.3",
+    "helmet": "^6.1.4",
     "http-status": "^1.6.2",
-    "moment": "^2.29.4",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

@@ -1,1 +1,1 @@
-# y-dictionary-server
+# y-dictionary-api

@@ -8,9 +8,6 @@ const URI = 'https://tw.dictionary.search.yahoo.com/search?p=';
 const load = async (url) => {
   try {
     const res = await axios.get(url);
-    if (res.data.indexOf('字典找不到您要的資料喔') > -1) {
-      throw new Error('Not Found');
-    }
     return cheerio.load(res.data);
   } catch (error) {
     throw error;
@@ -34,6 +31,10 @@ module.exports = async (str) => {
   }
   
   const getData = () => {
+    const notFoundText = $('.searchCenterTop > .first > .cardDesign > .compTitle > .title').text();
+    if (notFoundText.indexOf('很抱歉，字典找不到您要的資料喔') > -1) {
+      return 'Not Found';
+    }
     // main
     const mTitle = $('.cardDesign.dictionaryWordCard > .grp-main > .compTitle > .title > span').text();
     const phoneticElems = $('.cardDesign.dictionaryWordCard > .grp-main > .compList.d-ib > ul > li > span');
@@ -75,7 +76,6 @@ module.exports = async (str) => {
     const moreElem = $('.cardDesign.sys_dict_disambiguation');
     const more = getTabsCardData(moreElem);
     return {
-      src,
       main,
       notes,
       secondary,
