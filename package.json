@@ -37,10 +37,10 @@
       }
     },
     "build": {
-      "command": "docker build -t y-dictionary-server:latest ."
+      "command": "docker build -t y-dictionary-api:latest ."
     },
     "gcloud-build": {
-      "command": "gcloud builds submit --tag gcr.io/impactful-drive-375211/y-dictionary-server ."
+      "command": "gcloud builds submit --tag gcr.io/impactful-drive-375211/y-dictionary-api ."
     }
   },
   "dependencies": {
