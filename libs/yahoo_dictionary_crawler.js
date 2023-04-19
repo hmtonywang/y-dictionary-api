@@ -6,12 +6,8 @@ const cheerio = require('cheerio');
 const URI = 'https://tw.dictionary.search.yahoo.com/search?p=';
 
 const load = async (url) => {
-  try {
-    const res = await axios.get(url);
-    return cheerio.load(res.data);
-  } catch (error) {
-    throw error;
-  }
+  const res = await axios.get(url);
+  return cheerio.load(res.data);
 };
 
 module.exports = async (str) => {
@@ -23,13 +19,8 @@ module.exports = async (str) => {
     throw new RangeError('Yahoo dictionary crawler requires a non-empty string');
   }
   const src = `${URI}${str}`;
-  let $;
-  try {
-    $ = await load(src);
-  } catch (error) {
-    throw error;
-  }
-  
+  const $ = await load(src);
+
   const getData = () => {
     const notFoundText = $('.searchCenterTop > .first > .cardDesign > .compTitle > .title').text();
     if (notFoundText.indexOf('很抱歉，字典找不到您要的資料喔') > -1) {
@@ -46,7 +37,7 @@ module.exports = async (str) => {
     const mPronunciations = [];
     for (const mPronunciationElem of mPronunciationElems) {
       mPronunciations.push({
-        text: $(mPronunciationElem).text(),
+        text: $(mPronunciationElem).text()
       });
     }
     const mExplanationElems = $('.cardDesign.dictionaryWordCard > .grp-main > .compList.p-rel > ul > li');
@@ -54,14 +45,14 @@ module.exports = async (str) => {
     for (const elem of mExplanationElems) {
       mExplanations.push({
         pos: $(elem).find('.pos_button').text(),
-        explanation: $(elem).find('.dictionaryExplanation').text(),
+        explanation: $(elem).find('.dictionaryExplanation').text()
       });
     }
     const main = {
       title: mTitle,
       phonetic,
       pronunciations: mPronunciations,
-      explanations: mExplanations,
+      explanations: mExplanations
     };
     // note
     const notes = [];
@@ -79,10 +70,10 @@ module.exports = async (str) => {
       main,
       notes,
       secondary,
-      more,
+      more
     };
   };
-  
+
   const getTabsCardData = (tabsCardElem) => {
     const tabs = [];
     const layoutTopElems = $(tabsCardElem).find('.layoutTop > .compTabsControl > ul.tab-control > li');
@@ -90,7 +81,7 @@ module.exports = async (str) => {
       const target = $(layoutTopElem).attr('data-target');
       const tab = {
         name: $(layoutTopElem).text(),
-        target,
+        target
       };
       const tabContentElem = $(tabsCardElem).find(`.layoutCenter > .grp.${target}`);
       tab.rows = getTabContentRows(tabContentElem);
@@ -98,7 +89,7 @@ module.exports = async (str) => {
     }
     return tabs;
   };
-  
+
   const getTabContentRows = (tabContentElem) => {
     const rows = [];
     const rowElems = $(tabContentElem).find('.compTitle:not(.lh-20), .compTextList, .compDlink, .compList, .compText');
@@ -117,7 +108,7 @@ module.exports = async (str) => {
           type: 'title',
           label: titleLabel || undefined,
           text: titleText,
-          href: titleHref || undefined,
+          href: titleHref || undefined
         };
       } else if (isContent) {
         const contentElems = $(rowElem).find('ul > li');
@@ -133,7 +124,7 @@ module.exports = async (str) => {
           rows.push({
             pos: contentPos || undefined,
             explanation: contentExplanation,
-            examples: contentExamples,
+            examples: contentExamples
           });
         }
         row = { type: 'content', rows };
@@ -143,7 +134,7 @@ module.exports = async (str) => {
         for (const linkElem of linkElems) {
           rows.push({
             text: $(linkElem).text(),
-            href: $(linkElem).attr('href'),
+            href: $(linkElem).attr('href')
           });
         }
         row = { type: 'link', rows };
@@ -157,7 +148,7 @@ module.exports = async (str) => {
       } else if (isPronunciation) {
         row = {
           type: 'pronunciation',
-          text: $(rowElem).find('p > .fz-13').text(),
+          text: $(rowElem).find('p > .fz-13').text()
         };
       }
       if (row) {
@@ -169,6 +160,6 @@ module.exports = async (str) => {
 
   return {
     getData: () => getData(),
-    get$: () => $,
+    get$: () => $
   };
 };

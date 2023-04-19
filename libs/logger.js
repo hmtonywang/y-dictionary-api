@@ -7,8 +7,8 @@ const defaultOptions = {
   streams: [
     {
       level: 'info',
-      stream: process.stdout,
-    },
+      stream: process.stdout
+    }
   ],
   serializers: {
     req: (req) => {
@@ -16,13 +16,13 @@ const defaultOptions = {
         method: req.method,
         url: req.url,
         traceId: req.traceId,
-        headers: req.headers,
+        headers: req.headers
       };
     },
     res: (res) => {
       const obj = {
         statusCode: res.statusCode,
-        traceId: res.traceId,
+        traceId: res.traceId
         // headers: res.getHeaders(),
       };
       if (res.statusCode >= 400) {
@@ -35,10 +35,10 @@ const defaultOptions = {
         name: err.name,
         message: err.message,
         stack: err.stack,
-        traceId: err.traceId,
+        traceId: err.traceId
       };
-    },
-  },
+    }
+  }
 };
 
 module.exports = (options) => {
@@ -47,7 +47,7 @@ module.exports = (options) => {
     : options;
   const settings = {
     ...defaultOptions,
-    ...config,
+    ...config
   };
   return bunyan.createLogger(settings);
 };

@@ -10,7 +10,7 @@ const defaultOptions = {
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   handler: (req, res, next, options) => {
     res.failTooManyRequests();
-  },
+  }
 };
 
 const createRateLimit = (options) => {
@@ -24,6 +24,6 @@ module.exports = createRateLimit;
 module.exports.requestsInSeconds = (numOfReq, inSeconds) => {
   return createRateLimit({
     windowMs: inSeconds * 1000,
-    max: numOfReq,
+    max: numOfReq
   });
 };

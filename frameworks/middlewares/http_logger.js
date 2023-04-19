@@ -10,13 +10,13 @@ module.exports = (logger) => {
     const traceId = uuidv4();
     req.traceId = traceId;
     res.traceId = traceId;
-    req.remoteAddress = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+    req.remoteAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     // Log requests
     reqLogger.info({ req });
-  
+
     // Override res.send to set res.body before send
     const originalSend = res.send;
-    res.send = function newSend(body) {
+    res.send = function newSend (body) {
       res.body = body;
       originalSend.call(this, body);
     };
@@ -24,7 +24,7 @@ module.exports = (logger) => {
       const endTime = new Date();
       // Log responses
       resLogger.child({ duration: endTime - startTime }).info({ res });
-    })
+    });
     next();
   };
 };

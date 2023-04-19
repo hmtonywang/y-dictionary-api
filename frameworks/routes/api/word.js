@@ -21,7 +21,7 @@ module.exports = ({ config, logger }) => {
       param('word').trim().escape().notEmpty(),
       validationResultMiddleware,
       cacheMiddleware({ cacheImpl: localCache, logger }),
-      controller.getMeaning,
+      controller.getMeaning
     );
 
   return router;

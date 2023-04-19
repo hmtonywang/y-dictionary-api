@@ -3,28 +3,28 @@
 const responseCodes = {
   ok: {
     status: 200,
-    message: 'OK',
+    message: 'OK'
   },
   badRequest: {
     status: 400,
-    message: 'Bad Request',
+    message: 'Bad Request'
   },
   unauthorized: {
     status: 401,
-    message: 'Unauthorized',
+    message: 'Unauthorized'
   },
   notFound: {
     status: 404,
-    message: 'Not Found',
+    message: 'Not Found'
   },
   tooManyRequests: {
     status: 429,
-    message: 'Too Many Requests',
+    message: 'Too Many Requests'
   },
   internalServerError: {
     status: 500,
-    message: 'Internal Server Error',
-  },
+    message: 'Internal Server Error'
+  }
 };
 
 module.exports = (req, res, next) => {
@@ -32,7 +32,7 @@ module.exports = (req, res, next) => {
     const response = {
       status,
       message,
-      ...moreInfo,
+      ...moreInfo
     };
     if (data) {
       response.data = data;
@@ -45,7 +45,7 @@ module.exports = (req, res, next) => {
 
   res.fail = (message = responseCodes.internalServerError.message, status = responseCodes.internalServerError.status, code = null) => {
     const info = {
-      error: code || status.toString(),
+      error: code || status.toString()
     };
 
     res.respond(null, status, message, info);

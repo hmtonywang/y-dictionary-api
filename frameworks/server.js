@@ -6,7 +6,7 @@ const { createTerminus } = require('@godaddy/terminus');
 const httpLoggerMiddleware = require('./middlewares/http_logger');
 const authMiddleware = require('./middlewares/auth');
 const responseMiddleware = require('./middlewares/response');
-const errorHandlerMiddleware = require('./middlewares/error_handler');;
+const errorHandlerMiddleware = require('./middlewares/error_handler');
 const routes = require('./routes');
 
 module.exports = ({ app, server, config, logger }) => {
@@ -53,10 +53,10 @@ module.exports = ({ app, server, config, logger }) => {
     sendFailuresDuringShutdown: true,
     beforeShutdown,
     onSignal,
-    onShutdown,
+    onShutdown
   });
 
   return {
-    launch,
+    launch
   };
 };

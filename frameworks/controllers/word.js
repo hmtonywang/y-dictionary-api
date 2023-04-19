@@ -19,6 +19,6 @@ module.exports = ({ logger }) => {
   };
 
   return {
-    getMeaning,
+    getMeaning
   };
 };

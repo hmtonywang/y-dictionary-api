@@ -20,7 +20,7 @@ module.exports = ({ cacheImpl, logger }) => {
     }
     // Override res.send to set cache before send
     const originalSend = res.send;
-    res.send = async function newSend(data) {
+    res.send = async function newSend (data) {
       if (res.statusCode === 200) {
         try {
           await cacheImpl.set(key, data);

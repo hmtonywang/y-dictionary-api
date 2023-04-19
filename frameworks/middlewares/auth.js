@@ -14,10 +14,10 @@ module.exports = ({ config }) => {
     const timestamp = req.header('X-TIMESTAMP');
     const expired = (new Date().getTime() - timestamp) > expiry;
     if (
-      apiKey !== config.auth.apiKey
-      || !signature
-      || !timestamp
-      || expired
+      apiKey !== config.auth.apiKey ||
+      !signature ||
+      !timestamp ||
+      expired
     ) {
       return res.failUnauthorized();
     }
