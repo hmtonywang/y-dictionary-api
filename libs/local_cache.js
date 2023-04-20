@@ -1,28 +1,34 @@
 'use strict';
 
-const config = require('../config');
+module.exports = (options) => {
+  const capacity = options?.capacity || 100;
+  const expiry = options?.expiry || 3600 * 1000;
+  const map = new Map();
 
-const CAPACITY = config?.cache?.options?.capacity || 100;
-const EXPIRATION = config?.cache?.options?.expiration || 3600000;
-const map = new Map();
+  const get = (key) => {
+    if (!map.has(key)) {
+      return null;
+    }
+    const expiration = new Date().getTime() - expiry;
+    const [value, timestamp] = map.get(key);
+    const isExpired = timestamp < expiration;
+    if (isExpired) {
+      map.delete(key);
+      return null;
+    }
+    return value;
+  };
 
-module.exports.get = (key) => {
-  if (!map.has(key)) {
-    return;
-  }
-  const expiration = new Date().getTime() - EXPIRATION;
-  const [value, timestamp] = map.get(key);
-  if (timestamp < expiration) {
-    map.delete(key);
-    return;
-  }
-  return value;
-};
-
-module.exports.set = (key, value) => {
-  const timestamp = new Date().getTime();
-  if (map.size >= CAPACITY) {
-    map.delete(map.keys().next().value);
-  }
-  map.set(key, [value, timestamp]);
+  const set = (key, value) => {
+    const timestamp = new Date().getTime();
+    const isFull = map.size >= capacity;
+    if (isFull) {
+      map.delete(map.keys().next().value);
+    }
+    map.set(key, [value, timestamp]);
+  };
+  return {
+    get,
+    set
+  };
 };

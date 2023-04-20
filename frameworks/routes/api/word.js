@@ -5,7 +5,7 @@ const { param } = require('express-validator');
 const rateLimitMiddleware = require('../../middlewares/rate_limit');
 const validationResultMiddleware = require('../../middlewares/validation_result');
 const wordController = require('../../controllers/word');
-const localCache = require('../../../libs/local_cache');
+const localCache = require('../../../libs/local_cache')();
 const cacheMiddleware = require('../../middlewares/cache');
 
 module.exports = ({ config, logger }) => {
