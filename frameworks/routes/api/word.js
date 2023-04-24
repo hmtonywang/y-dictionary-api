@@ -11,13 +11,14 @@ const cacheMiddleware = require('../../middlewares/cache');
 module.exports = ({ config, logger }) => {
   const router = express.Router();
   const controller = wordController({ config, logger });
+  const rateLimit = rateLimitMiddleware({ config });
 
   router
     .route('/:word')
     .get(
-      rateLimitMiddleware.requestsInSeconds(100, 24 * 3600),
-      rateLimitMiddleware.requestsInSeconds(30, 3600),
-      rateLimitMiddleware.requestsInSeconds(2, 5),
+      rateLimit.requestsInSeconds(100, 24 * 3600),
+      rateLimit.requestsInSeconds(30, 3600),
+      rateLimit.requestsInSeconds(2, 5),
       param('word').trim().escape().notEmpty(),
       validationResultMiddleware,
       cacheMiddleware({ cacheImpl: localCache, logger }),

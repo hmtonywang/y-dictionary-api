@@ -8,13 +8,13 @@ module.exports = ({ logger }) => {
   const getMeaning = async (req, res, next) => {
     const { word } = req.params;
     try {
-      const crawler = await ydCrawler(word);
-      const data = crawler.getData();
+      const crawler = ydCrawler(word);
+      const data = await crawler.getData();
       res.respond(data);
     } catch (error) {
       error.traceId = req.traceId;
       controllerLogger.error(error);
-      res.failServerError();
+      res.internalServerError();
     }
   };
 

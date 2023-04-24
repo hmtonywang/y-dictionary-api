@@ -8,7 +8,7 @@ module.exports = ({ config, logger }) => {
 
   router.use(`/${config.version}`, api({ config, logger }));
   router.all('*', (req, res) => {
-    res.failNotFound();
+    res.notFound();
   });
 
   return router;

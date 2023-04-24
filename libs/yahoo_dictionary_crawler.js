@@ -10,7 +10,7 @@ const load = async (url) => {
   return cheerio.load(res.data);
 };
 
-module.exports = async (str) => {
+module.exports = (str) => {
   if (typeof str !== 'string') {
     throw new TypeError(`Yahoo dictionary crawler requires a string but got a ${typeof str}`);
   }
@@ -19,15 +19,19 @@ module.exports = async (str) => {
     throw new RangeError('Yahoo dictionary crawler requires a non-empty string');
   }
   const src = `${URI}${str}`;
-  const $ = await load(src);
+  let $;
 
-  const getData = () => {
+  const getData = async () => {
+    $ = await load(src);
     const notFoundText = $('.searchCenterTop > .first > .cardDesign > .compTitle > .title').text();
     if (notFoundText.indexOf('很抱歉，字典找不到您要的資料喔') > -1) {
       return 'Not Found';
     }
     // main
     const mTitle = $('.cardDesign.dictionaryWordCard > .grp-main > .compTitle > .title > span').text();
+    if (!mTitle) {
+      return 'Not Found';
+    }
     const phoneticElems = $('.cardDesign.dictionaryWordCard > .grp-main > .compList.d-ib > ul > li > span');
     const phonetic = [];
     for (const phoneticElem of phoneticElems) {
@@ -159,7 +163,6 @@ module.exports = async (str) => {
   };
 
   return {
-    getData: () => getData(),
-    get$: () => $
+    getData
   };
 };

@@ -20,3 +20,5 @@ server({
 process.on('uncaughtException', (err) => {
   uncaughtExceptionLogger.error(err);
 });
+
+module.exports = app;

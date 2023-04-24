@@ -1,34 +1,34 @@
 'use strict';
 
-const responseCodes = {
-  ok: {
+const RESPONSE = {
+  OK: {
     status: 200,
     message: 'OK'
   },
-  badRequest: {
+  BAD_REQUEST: {
     status: 400,
     message: 'Bad Request'
   },
-  unauthorized: {
+  UNAUTHORIZED: {
     status: 401,
     message: 'Unauthorized'
   },
-  notFound: {
+  NOT_FOUND: {
     status: 404,
     message: 'Not Found'
   },
-  tooManyRequests: {
+  TOO_MANY_REQUESTS: {
     status: 429,
     message: 'Too Many Requests'
   },
-  internalServerError: {
+  INTERNAL_SERVER_ERROR: {
     status: 500,
     message: 'Internal Server Error'
   }
 };
 
 module.exports = (req, res, next) => {
-  res.respond = (data = null, status = responseCodes.ok.status, message = responseCodes.ok.message, moreInfo = {}) => {
+  res.respond = (data = null, status = RESPONSE.OK.status, message = RESPONSE.OK.message, moreInfo = {}) => {
     const response = {
       status,
       message,
@@ -43,7 +43,7 @@ module.exports = (req, res, next) => {
       .json(response);
   };
 
-  res.fail = (message = responseCodes.internalServerError.message, status = responseCodes.internalServerError.status, code = null) => {
+  res.fail = (message = RESPONSE.INTERNAL_SERVER_ERROR.message, status = RESPONSE.INTERNAL_SERVER_ERROR.status, code = null) => {
     const info = {
       error: code || status.toString()
     };
@@ -51,25 +51,26 @@ module.exports = (req, res, next) => {
     res.respond(null, status, message, info);
   };
 
-  res.failUnauthorized = (message = responseCodes.unauthorized.message, code) => {
-    res.fail(message, responseCodes.unauthorized.status, code);
+  res.unauthorized = (message = RESPONSE.UNAUTHORIZED.message, code) => {
+    res.fail(message, RESPONSE.UNAUTHORIZED.status, code);
   };
 
-  res.failNotFound = (message = responseCodes.notFound.message, code) => {
-    res.fail(message, responseCodes.notFound.status, code);
+  res.notFound = (message = RESPONSE.NOT_FOUND.message, code) => {
+    res.fail(message, RESPONSE.NOT_FOUND.status, code);
   };
 
-  res.failValidationError = (message = responseCodes.badRequest.message, code) => {
-    res.fail(message, responseCodes.badRequest.status, code);
+  res.validationError = (message = RESPONSE.BAD_REQUEST.message, code) => {
+    res.fail(message, RESPONSE.BAD_REQUEST.status, code);
   };
 
-  res.failTooManyRequests = (message = responseCodes.tooManyRequests.message, code) => {
-    res.fail(message, responseCodes.tooManyRequests.status, code);
+  res.tooManyRequests = (message = RESPONSE.TOO_MANY_REQUESTS.message, code) => {
+    res.fail(message, RESPONSE.TOO_MANY_REQUESTS.status, code);
   };
 
-  res.failServerError = (message = responseCodes.internalServerError.message, code) => {
-    res.fail(message, responseCodes.internalServerError.status, code);
+  res.internalServerError = (message = RESPONSE.INTERNAL_SERVER_ERROR.message, code) => {
+    res.fail(message, RESPONSE.INTERNAL_SERVER_ERROR.status, code);
   };
 
   next();
 };
+module.exports.RESPONSE = RESPONSE;

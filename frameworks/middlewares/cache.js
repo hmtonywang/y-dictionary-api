@@ -10,9 +10,9 @@ module.exports = ({ cacheImpl, logger }) => {
       const data = await cacheImpl.get(key);
       if (data) {
         if (typeof data === 'string') {
-          return res.send(data);
+          return res.status(200).send(data);
         }
-        return res.json(data);
+        return res.status(200).json(data);
       }
     } catch (error) {
       error.traceId = req.traceId;

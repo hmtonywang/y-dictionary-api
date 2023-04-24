@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = errors.array()[0];
-    return res.failValidationError(error.msg);
+    return res.validationError(error.msg);
   }
   next();
 };

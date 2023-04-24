@@ -13,6 +13,7 @@ const defaultOptions = {
   serializers: {
     req: (req) => {
       return {
+        ip: req.ip,
         method: req.method,
         url: req.url,
         traceId: req.traceId,

@@ -1,7 +1,6 @@
 'use strict';
 
 const rateLimit = require('express-rate-limit');
-const config = require('../../config');
 
 const defaultOptions = {
   windowMs: 5000,
@@ -9,21 +8,26 @@ const defaultOptions = {
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   handler: (req, res, next, options) => {
-    res.failTooManyRequests();
+    res.tooManyRequests();
   }
 };
 
-const createRateLimit = (options) => {
-  if (!config.rateLimit) {
-    return (req, res, next) => next();
-  }
-  return rateLimit({ ...defaultOptions, ...options });
-};
-
-module.exports = createRateLimit;
-module.exports.requestsInSeconds = (numOfReq, inSeconds) => {
-  return createRateLimit({
-    windowMs: inSeconds * 1000,
-    max: numOfReq
-  });
+module.exports = ({ config }) => {
+  const disable = !config.rateLimit;
+  const createRateLimit = (options) => {
+    if (disable) {
+      return (req, res, next) => next();
+    }
+    return rateLimit({ ...defaultOptions, ...options });
+  };
+  const requestsInSeconds = (numOfReq, inSeconds) => {
+    return createRateLimit({
+      windowMs: inSeconds * 1000,
+      max: numOfReq
+    });
+  };
+  return {
+    createRateLimit,
+    requestsInSeconds
+  };
 };

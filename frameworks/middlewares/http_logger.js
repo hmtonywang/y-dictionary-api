@@ -10,7 +10,7 @@ module.exports = (logger) => {
     const traceId = uuidv4();
     req.traceId = traceId;
     res.traceId = traceId;
-    req.remoteAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    // req.remoteAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     // Log requests
     reqLogger.info({ req });
 
