@@ -1,6 +1,6 @@
 'use strict';
 
-const ydCrawler = require('../../libs/yahoo_dictionary_crawler');
+const crawler = require('dictionary-crawler');
 
 module.exports = ({ logger }) => {
   const controllerLogger = logger('word controller');
@@ -8,8 +8,7 @@ module.exports = ({ logger }) => {
   const getMeaning = async (req, res, next) => {
     const { word } = req.params;
     try {
-      const crawler = ydCrawler(word);
-      const data = await crawler.getData();
+      const data = await crawler.yahoo.crawl(word);
       res.respond(data);
     } catch (error) {
       error.traceId = req.traceId;
