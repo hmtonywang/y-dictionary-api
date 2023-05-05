@@ -1,5 +1,5 @@
 {
-  "name": "y-dictionary-api",
+  "name": "y-dictionary-server",
   "version": "0.1.0",
   "description": "A service to look up word(s).",
   "author": "hm.tony.wang@gmail.com",
