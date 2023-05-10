@@ -24,7 +24,7 @@
     "bunyan": "^1.8.15",
     "cheerio": "^1.0.0-rc.12",
     "compression": "^1.7.4",
-    "dictionary-crawler": "https://github.com/hmtonywang/dictionary-crawler",
+    "dictionary-crawler": "^0.1.0",
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
     "express-validator": "^6.14.3",

@@ -952,11 +952,11 @@ dezalgo@^1.0.4:
     asap "^2.0.0"
     wrappy "1"
 
-"dictionary-crawler@https://github.com/hmtonywang/dictionary-crawler":
+dictionary-crawler@^0.1.0:
   version "0.1.0"
-  resolved "https://github.com/hmtonywang/dictionary-crawler#4aee82d6d639719c1af67bb2d2812d698b1d615a"
+  resolved "https://registry.yarnpkg.com/dictionary-crawler/-/dictionary-crawler-0.1.0.tgz#05fd1c10840d1a95a95e160f534b304e19dcdc26"
+  integrity sha512-wE8LDHtzcY4jjmpilvE03NcX+rnXXi15M3wdeBf8zrBKIHz+7M1JKnXXQWNJzBak7Ycwp2ey4bglyBCvF4B9qA==
   dependencies:
-    axios "^1.3.2"
     cheerio "^1.0.0-rc.12"
 
 diff@5.0.0:
