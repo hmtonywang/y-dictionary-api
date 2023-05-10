@@ -1,4 +1,4 @@
-# y-dictionary-server
+# dictionary-api-server
 
 A server which provides RESTful API(s) to look up word(s) using Express.js and runs the server on port 3000 by default.
 
@@ -7,8 +7,8 @@ A server which provides RESTful API(s) to look up word(s) using Express.js and r
 ## Installation
 
 ```shell
-git clone git@github.com:hmtonywang/y-dictionary-server.git
-cd y-dictionary-server
+git clone git@github.com:hmtonywang/dictionary-api-server.git
+cd dictionary-api-server
 yarn install
 ```
 
@@ -64,5 +64,5 @@ MIT
 
 ## Related Projects
 
-- [y-dictionary-chrome-ext](https://github.com/hmtonywang/y-dictionary-chrome-ext) - A chrome extension to look up word(s)
+- [dictionary-chrome-ext](https://github.com/hmtonywang/dictionary-chrome-ext) - A chrome extension to look up word(s)
 - [dictionary-crawler](https://github.com/hmtonywang/dictionary-crawler) - A dictionary crawler based on cheerio
