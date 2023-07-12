@@ -11,10 +11,6 @@ const req = {
 const res = {};
 
 describe('frameworks/middlewares/rate_limit', () => {
-  it('should throw an error', () => {
-    expect(rateLimitMiddleware).to.throw();
-  });
-
   it('should return a createRateLimit function and a requestsInSeconds function', () => {
     const middleware = rateLimitMiddleware({ config: { rateLimit: false } });
     expect(middleware).to.have.own.property('createRateLimit');

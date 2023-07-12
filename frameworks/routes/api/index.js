@@ -3,10 +3,10 @@
 const express = require('express');
 const word = require('./word');
 
-module.exports = ({ config, logger }) => {
+module.exports = (options) => {
   const router = express.Router();
 
-  router.use('/words', word({ config, logger }));
+  router.use('/words', word(options));
 
   return router;
 };
