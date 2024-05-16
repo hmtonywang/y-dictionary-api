@@ -2,7 +2,7 @@
 
 const express = require('express');
 const { param } = require('express-validator');
-const validationResultMiddleware = require('../../middlewares/validation_result');
+const expressValidatorMiddleware = require('../../middlewares/express_validator');
 const wordController = require('../../controllers/word');
 const localCache = require('../../../libs/local_cache')();
 const cacheMiddleware = require('../../middlewares/cache');
@@ -15,8 +15,9 @@ module.exports = ({ config, logger, redis }) => {
   router
     .route('/:word')
     .get(
-      param('word').trim().escape().notEmpty(),
-      validationResultMiddleware,
+      expressValidatorMiddleware([
+        param('word').trim().escape().notEmpty()
+      ]),
       redis
         ? redisCacheMiddleware({ redis, ex: 3 * 60 * 60, logger })
         : cacheMiddleware({ cacheImpl: localCache, logger }),

@@ -1,13 +1,12 @@
 'use strict';
 
 const express = require('express');
-const api = require('./api');
+const v1 = require('./v1');
 
 module.exports = (options) => {
-  const { config } = options;
   const router = express.Router();
 
-  router.use(`/${config.version}`, api(options));
+  router.use('/v1', v1(options));
   router.all('*', (req, res) => {
     res.notFound();
   });
