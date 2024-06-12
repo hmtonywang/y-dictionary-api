@@ -6,7 +6,7 @@ if (process.env.REDIS) {
   try {
     redisConfig = JSON.parse(process.env.REDIS);
   } catch (error) {
-    console.warn(error);
+    console.warn('Parse JSON process.env.REDIS error', error);
     redisConfig = process.env.REDIS;
   }
 }
