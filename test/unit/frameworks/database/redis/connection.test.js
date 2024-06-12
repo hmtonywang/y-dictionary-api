@@ -15,11 +15,11 @@ describe('redis connection', () => {
   });
 
   it('should return an object with a createRedisClient function', () => {
-    const config = {};
+    const url = '';
 
     const redisConnection = connection({
       Redis: FakeRedis,
-      config,
+      url,
       logger
     });
 
@@ -28,10 +28,9 @@ describe('redis connection', () => {
   });
 
   it('should create a ioredis client with the correct url', async () => {
-    console.log('@@',redisConfig)
     const redisConnection = connection({
       Redis,
-      config: redisConfig,
+      url: redisConfig,
       logger
     });
     let redisClient;
@@ -39,23 +38,19 @@ describe('redis connection', () => {
       redisClient = await redisConnection.createRedisClient();
       expect(redisClient instanceof Redis).to.be.true;
     } catch (error) {
-      console.error(error);
       expect('should create a redis client').to.be.true;
     }
     if (redisClient) {
-      redisClient.disconnect();
+      await redisClient.disconnect();
     }
   });
 
-  it('should throw an error if invalid host and port has been provided', async () => {
-    const config = {
-      host: 'invalid host',
-      port: 'invalid port'
-    };
+  it('should throw an error if invalid url has been provided', async () => {
+    const url = 'invalid url';
 
     const redisConnection = connection({
       Redis,
-      config,
+      url,
       logger
     });
     let err;

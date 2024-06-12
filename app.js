@@ -18,7 +18,7 @@ const httpServer = http.createServer(app);
 
 redisConnection({
   Redis,
-  config: config.redis,
+  url: config.redis,
   logger
 })
   .createRedisClient()
