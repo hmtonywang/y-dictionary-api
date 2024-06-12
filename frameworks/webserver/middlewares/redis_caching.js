@@ -10,6 +10,9 @@ module.exports = function redisCachingMiddleware ({
 }) {
   const redisCachingRepository = redisRepositoryInterface(redisRepositoryImpl(redisClient));
   return async function getFromCache (req, res, next) {
+    if (req.method !== 'GET') {
+      return next();
+    }
     const key = (typeof getCacheKey === 'function' ? getCacheKey(req) : cacheKey) || '';
     try {
       const data = await redisCachingRepository.get(key);
