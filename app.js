@@ -16,38 +16,44 @@ const logger = loggerConfig(bunyan, config.logger)('app');
 const app = express();
 const httpServer = http.createServer(app);
 
-const redisClient = redisConnection({
+redisConnection({
   Redis,
   config: config.redis,
   logger
-}).createRedisClient();
+})
+  .createRedisClient()
+  .then(redisClient => {
+    expressConfig({
+      app,
+      config,
+      logger
+    });
 
-expressConfig({
-  app,
-  config,
-  logger
-});
+    serverConfig({
+      app,
+      server: httpServer,
+      config: config.server,
+      redisClient,
+      logger
+    }).launch();
 
-serverConfig({
-  app,
-  server: httpServer,
-  config: config.server,
-  redisClient,
-  logger
-}).launch();
+    routes({
+      app,
+      express,
+      config,
+      logger,
+      redisClient
+    });
 
-routes({
-  app,
-  express,
-  config,
-  logger,
-  redisClient
-});
+    app.use(errorHandlingMiddleware({ logger, config }));
 
-app.use(errorHandlingMiddleware({ logger, config }));
-
-process.on('uncaughtException', (error) => {
-  logger.error({ error }, 'Uncaught exception');
-});
+    process.on('uncaughtException', (error) => {
+      logger.error({ error }, 'Uncaught exception');
+    });
+  })
+  .catch(error => {
+    logger.error({ error }, 'Create redis connection error');
+    process.exit(1);
+  });
 
 module.exports = app;
