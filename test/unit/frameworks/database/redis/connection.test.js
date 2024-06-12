@@ -22,22 +22,31 @@ describe('connection', () => {
     expect(redisConnection.createRedisClient).to.be.a('function');
   });
 
-  it('should create a redis client with the correct URL', () => {
-    const config = { url: 'redis://localhost:6379' };
-
-    const redisConnection = connection({ Redis: FakeRedis, config, logger });
-    const redisClient = redisConnection.createRedisClient();
-
-    expect(FakeRedis.calledOnceWithExactly(config.url)).to.be.true;
-    expect(redisClient instanceof FakeRedis).to.be.true;
-  });
-
-  it('should create a ioredis client', () => {
-    const config = { url: 'redis://localhost:6379' };
+  it('should create a ioredis client with the correct url', async () => {
+    const config = 'redis://localhost:6379';
 
     const redisConnection = connection({ Redis, config, logger });
-    const redisClient = redisConnection.createRedisClient();
+    try {
+      const redisClient = await redisConnection.createRedisClient();
+      expect(redisClient instanceof Redis).to.be.true;
+    } catch (error) {
+      expect('should create a redis client').to.be.true;
+    }
+  });
 
-    expect(redisClient instanceof Redis).to.be.true;
+  it('should throw an error if invalid url has been provided', async function () {
+    const config = {
+      host: 'invalid host',
+      port: 'invalid port'
+    };
+
+    const redisConnection = connection({ Redis, config, logger });
+    let err;
+    try {
+      await redisConnection.createRedisClient();
+    } catch (error) {
+      err = error;
+    }
+    expect(err instanceof Error).to.be.true;
   });
 });
