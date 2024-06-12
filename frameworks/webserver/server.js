@@ -12,32 +12,36 @@ module.exports = function serverConfig ({
   if (config.proxyNumber) {
     app.set('trust proxy', config.proxyNumber);
   }
-  const launch = () => {
+  function launch () {
     server.listen(config.port, () => {
       logger.info(`Server is listening on port ${config.port}`);
     });
   };
 
-  const beforeShutdown = () => {
+  function beforeShutdown () {
     logger.info('Server received signal and going to shut down.');
   };
 
-  const onSignal = async () => {
+  function onSignal () {
     logger.info('Server is starting cleanup.');
-    if (redisClient) {
-      await redisClient.disconnect();
-    }
+    return Promise.all([
+      redisClient.disconnect()
+    ]);
   };
 
-  const onShutdown = () => {
+  function onShutdown () {
     logger.info('Cleanup finished, server is shutting down.');
   };
 
-  const healthCheck = ({ state }) => {
+  function healthCheck ({ state }) {
     if (state.isShuttingDown) {
       return Promise.reject(new Error('Server is shutting down.'));
     }
     return Promise.resolve();
+  };
+
+  function loggerFunc (msg, error) {
+    logger.error({ error }, msg);
   };
 
   createTerminus(server, {
@@ -48,7 +52,8 @@ module.exports = function serverConfig ({
     sendFailuresDuringShutdown: true,
     beforeShutdown,
     onSignal,
-    onShutdown
+    onShutdown,
+    logger: loggerFunc
   });
 
   return {
