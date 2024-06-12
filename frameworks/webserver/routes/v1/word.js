@@ -36,14 +36,14 @@ module.exports = ({
   router
     .route('/:word')
     .get(
+      expressValidatorMiddleware([
+        param('word').trim().escape().notEmpty()
+      ]),
       rateLimitMiddleware({
         rateLimitInterface,
         rateLimitImpl,
         config: config.rateLimit
       }),
-      expressValidatorMiddleware([
-        param('word').trim().escape().notEmpty()
-      ]),
       redisCachingMiddleware({
         redisRepositoryInterface: wordRedisCacheRepositoryInterface,
         redisRepositoryImpl: redisCacheRepositoryImpl,
