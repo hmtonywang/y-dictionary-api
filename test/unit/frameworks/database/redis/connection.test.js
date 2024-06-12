@@ -36,6 +36,7 @@ describe('redis connection', () => {
     try {
       const redisClient = await redisConnection.createRedisClient();
       expect(redisClient instanceof Redis).to.be.true;
+      redisClient.disconnect();
     } catch (error) {
       expect('should create a redis client').to.be.true;
     }
