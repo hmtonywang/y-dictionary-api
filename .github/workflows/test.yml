@@ -19,4 +19,4 @@ jobs:
     - name: Run test
       run: yarn test
       env:
-        REDIS: "redis://redis:6379"
+        REDIS: "\"redis://redis:6379\""
