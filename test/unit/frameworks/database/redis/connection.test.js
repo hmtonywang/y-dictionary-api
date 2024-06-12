@@ -34,12 +34,16 @@ describe('redis connection', () => {
       config: redisConfig,
       logger
     });
+    let redisClient;
     try {
-      const redisClient = await redisConnection.createRedisClient();
+      redisClient = await redisConnection.createRedisClient();
       expect(redisClient instanceof Redis).to.be.true;
-      redisClient.disconnect();
     } catch (error) {
+      console.error(error);
       expect('should create a redis client').to.be.true;
+    }
+    if (redisClient) {
+      redisClient.disconnect();
     }
   });
 
@@ -55,11 +59,15 @@ describe('redis connection', () => {
       logger
     });
     let err;
+    let redisClient;
     try {
-      await redisConnection.createRedisClient();
+      redisClient = await redisConnection.createRedisClient();
     } catch (error) {
       err = error;
     }
     expect(err instanceof Error).to.be.true;
+    if (redisClient) {
+      redisClient.disconnect();
+    }
   });
 });
