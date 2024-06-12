@@ -15,7 +15,7 @@ jobs:
     - name: Check out repository code
       uses: actions/checkout@v3
     - name: Install dependencies
-      run: yarn install --production --frozen-lockfile
+      run: yarn install --frozen-lockfile
     - name: Run test
       run: yarn test
       env:
