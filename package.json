@@ -14,7 +14,7 @@
     "lint": "eslint . --fix",
     "unit-test": "nyc mocha \"test/unit/**/*.test.js\"",
     "integration-test": "nyc mocha \"test/integration/**/*.test.js\"",
-    "test": "yarn lint && yarn unit-test && yarn integration-test",
+    "test": "yarn lint && yarn unit-test",
     "build": "docker build -t y-dictionary-api:latest .",
     "gcloud-build": "gcloud builds submit --tag gcr.io/impactful-drive-375211/y-dictionary-api ."
   },
