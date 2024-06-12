@@ -1,5 +1,14 @@
 'use strict';
 
-module.exports = process.env.REDIS
-  ? JSON.parse(process.env.REDIS)
-  : 'redis://localhost:6379';
+let redisConfig = 'redis://localhost:6379';
+
+if (process.env.REDIS) {
+  try {
+    redisConfig = JSON.parse(process.env.REDIS);
+  } catch (error) {
+    console.warn(error);
+    redisConfig = process.env.REDIS;
+  }
+}
+
+module.exports = redisConfig;
