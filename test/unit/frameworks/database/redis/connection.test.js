@@ -28,6 +28,7 @@ describe('redis connection', () => {
   });
 
   it('should create a ioredis client with the correct url', async () => {
+    console.log('@@',redisConfig)
     const redisConnection = connection({
       Redis,
       config: redisConfig,
