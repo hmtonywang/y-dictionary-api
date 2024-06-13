@@ -15,10 +15,12 @@ module.exports = function expressConfig ({
   app.use(helmet());
   app.use(compression());
   app.use((req, res, next) => {
-    res.header('Content-Type', 'application/json; charset=utf-8');
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin,Content-Type,Accept,X-API-KEY,X-SIGNATURE,X-TIMESTAMP');
     res.header('Access-Control-Allow-Methods', 'GET,OPTIONS');
+    if (req.method !== 'OPTIONS') {
+      res.header('Content-Type', 'application/json; charset=utf-8');
+    }
     next();
   });
   app.use(expressLoggerMiddleware({ logger }));
