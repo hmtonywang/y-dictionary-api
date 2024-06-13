@@ -129,4 +129,26 @@ describe('word controller', () => {
     expect(req.setToCache.calledOnce).to.be.true;
     expect(req.setToCache.firstCall.firstArg).to.be.equal(expectedResult);
   });
+
+  it('should call next() with an error if something wrong', async () => {
+    const error = new Error('something wrong');
+    const fakeService = { lookup: sinon.fake.throws(error) };
+    const options = {
+      dictionaryServiceInterface: sinon.fake.returns(fakeService),
+      dictionaryServiceImpl: sinon.fake()
+    };
+    const controller = wordController(options);
+    const word = 'word';
+    const req = httpMocks.createRequest({
+      params: { word }
+    });
+    req.setToCache = sinon.fake();
+    const res = httpMocks.createResponse({ req });
+    const next = sinon.fake();
+    await controller.lookUpWord(req, res, next);
+
+    expect(next.calledOnce).to.be.true;
+    expect(next.firstCall.firstArg).to.be.an('error');
+    expect(next.calledOnceWithExactly(error)).to.be.true;
+  });
 });
