@@ -23,19 +23,19 @@ redisConnection({
 })
   .createRedisClient()
   .then(redisClient => {
-    expressConfig({
-      app,
-      config,
-      logger
-    });
-
-    serverConfig({
+    const server = serverConfig({
       app,
       server: httpServer,
       config: config.server,
       redisClient,
       logger
-    }).launch();
+    });
+
+    expressConfig({
+      app,
+      config,
+      logger
+    });
 
     routes({
       app,
@@ -50,6 +50,8 @@ redisConnection({
     process.on('uncaughtException', (error) => {
       logger.error({ error }, 'Uncaught exception');
     });
+
+    server.launch();
   })
   .catch(error => {
     logger.error({ error }, 'Create redis connection error');
