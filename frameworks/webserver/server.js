@@ -1,6 +1,7 @@
 'use strict';
 
 const { createTerminus } = require('@godaddy/terminus');
+const { CronJob } = require('cron');
 
 module.exports = function serverConfig ({
   app,
@@ -55,6 +56,25 @@ module.exports = function serverConfig ({
     onShutdown,
     logger: loggerFunc
   });
+
+  if (config.keepAliveUrl) {
+    function keepAlive () {
+      fetch(config.keepAliveUrl)
+        .then((res) => {
+          if (res.status === 200) {
+            logger.info('Server is alive');
+          } else {
+            logger.warn(`Failed to keep server alive with status code: ${res.status}`);
+          }
+        })
+        .catch((error) => {
+          logger.error({ error }, 'Keep server alive error');
+        });
+    }
+    const keepAliveJob = new CronJob('*/14 * * * *', keepAlive);
+    logger.info('Keep server alive job started');
+    keepAliveJob.start();
+  }
 
   return {
     launch
